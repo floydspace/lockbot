@@ -1,7 +1,7 @@
 import { APIGatewayProxyEvent, Context } from "aws-lambda";
 import * as awsServerlessExpress from "aws-serverless-express";
 import { app, expressReceiver, lockBot, prefix, url } from "./infra";
-import { handleCommand, getFirstParam } from "./lib";
+import { handleCommand, getFirstParam, getRestParams } from "./lib";
 
 app.command(
   `/${prefix}locks`,
@@ -12,6 +12,7 @@ app.command(
   handleCommand((command) =>
     lockBot.lock(
       getFirstParam(command.text),
+      getRestParams(command.text),
       command.user_id,
       command.channel_id,
       command.team_id

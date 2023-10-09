@@ -26,7 +26,7 @@ const runAllTests = () => {
       return lockBot.unlock(param, user, channel, team);
     }
     if (command === "/lock") {
-      return lockBot.lock(param, user, channel, team);
+      return lockBot.lock(param, [], user, channel, team);
     }
     if (command === "/lbtoken") {
       return lockBot.lbtoken(param, user, channel, team, "https://lockbot.app");

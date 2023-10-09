@@ -41,6 +41,7 @@
     "serverless-api-gateway-throttling": "^1.0.1",
     "serverless-dynamodb-local": "^0.2.39",
     "serverless-offline": "^6.8.0",
+    "serverless-pseudo-parameters": "^2.5.0",
     "serverless-webpack": "^5.3.2",
     "supertest": "^4.0.2",
     "ts-jest": "^25.4.0",
@@ -64,6 +65,8 @@
     "env-var": "^6.1.1",
     "express": "^4.17.1",
     "fp-ts": "^2.8.1",
-    "io-ts": "^2.2.9"
+    "io-ts": "^2.2.9",
+    "nanoid": "^3.1.16",
+    "parse-duration": "^0.4.4"
   }
 }

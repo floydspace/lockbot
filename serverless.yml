@@ -5,6 +5,7 @@ plugins:
   - serverless-dynamodb-local
   - serverless-offline
   - serverless-api-gateway-throttling
+  - serverless-pseudo-parameters
 
 provider:
   name: aws
@@ -18,12 +19,8 @@ provider:
     INSTALLATIONS_TABLE_NAME: ${self:custom.installationsTableName}
     ACCESS_TOKENS_TABLE_NAME: ${self:custom.accessTokensTableName}
     SERVERLESS_STAGE: ${self:custom.stage}
-    API_GATEWAY_URL:
-      Fn::Join:
-        - ""
-        - - "https://"
-          - Ref: "ApiGatewayRestApi"
-          - ".execute-api.${self:custom.region}.amazonaws.com/${self:custom.stage}"
+    API_GATEWAY_URL: https://#{ApiGatewayRestApi}.execute-api.${self:custom.region}.amazonaws.com/${self:custom.stage}
+    SCHEDULER_HANDLER: arn:aws:lambda:${self:custom.region}:#{AWS::AccountId}:function:${self:service.name}-${self:custom.stage}-scheduler
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -78,6 +75,8 @@ functions:
       - http:
           method: get
           path: /api-docs/openapi.json
+  scheduler:
+    handler: src/handlers/scheduler/index.handler
 
 
 resources:

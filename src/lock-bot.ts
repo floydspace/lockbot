@@ -1,3 +1,7 @@
+import * as env from "env-var";
+import { nanoid } from "nanoid";
+import parse from "parse-duration";
+import scheduler from "./scheduler";
 import TokenAuthorizer from "./token-authorizer";
 
 export interface LockRepo {
@@ -31,6 +35,7 @@ export default class LockBot {
 
   lock = async (
     resource: string,
+    args: string[],
     user: string,
     channel: string,
     team: string
@@ -59,6 +64,19 @@ export default class LockBot {
         destination: "user",
       };
     }
+
+    if (args.length) {
+      const duration = parse(args.join(" "));
+      if (duration) {
+        await scheduler.raiseLambdaAtTime({
+          name: nanoid(),
+          time: new Date(+new Date() + duration),
+          lambdaArn: env.get("SCHEDULER_HANDLER").required().asString(),
+          input: { resource, channel, team },
+        });
+      }
+    }
+
     await this.lockRepo.setOwner(resource, user, channel, team);
     return {
       message: `<@${user}> has locked \`${resource}\` 🔒`,

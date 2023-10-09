@@ -68,3 +68,8 @@ export const handleCommand = (
 };
 
 export const getFirstParam = (commandText: string) => commandText.split(" ")[0];
+
+export const getRestParams = (commandText: string) => {
+  const [, ...restParams] = commandText.split(" ").filter(Boolean);
+  return restParams;
+};
